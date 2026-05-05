@@ -1,0 +1,13 @@
+model,prompt_a,prompt_b,acc_a,acc_b,b01,b10,odds_ratio,mcnemar_stat,p_value,significant_p05,n_matched,p_holm,significant_holm
+claude-sonnet,baseline,cot,0.8703,0.7383,71,252,0.282,100.3096,0.0,True,1372,0.0,True
+claude-sonnet,choices,cot,0.9125,0.7383,93,332,0.28,133.28,0.0,True,1372,0.0,True
+claude-sonnet,baseline,choices,0.8703,0.9125,131,73,1.795,15.9265,0.0001,True,1372,0.0005,True
+deepseek-r1,baseline,choices,0.6509,0.4606,101,362,0.279,146.0043,0.0,True,1372,0.0,True
+deepseek-r1,choices,cot,0.4606,0.6276,341,112,3.045,114.755,0.0,True,1372,0.0,True
+deepseek-r1,baseline,cot,0.6509,0.6276,132,164,0.805,3.2466,0.0716,False,1372,0.1432,False
+gpt-4o,baseline,cot,0.7442,0.2427,30,718,0.042,630.9746,0.0,True,1372,0.0,True
+gpt-4o,choices,cot,0.7493,0.2427,7,702,0.01,679.3173,0.0,True,1372,0.0,True
+gpt-4o,baseline,choices,0.7442,0.7493,113,106,1.066,0.1644,0.6852,False,1372,0.6852,False
+llama-3.3-70b,baseline,cot,0.5714,0.449,301,469,0.642,36.2195,0.0,True,1372,0.0,True
+llama-3.3-70b,baseline,choices,0.5714,0.5153,192,269,0.714,12.5293,0.0004,True,1372,0.0016,True
+llama-3.3-70b,choices,cot,0.5153,0.449,307,398,0.771,11.4894,0.0007,True,1372,0.0021,True

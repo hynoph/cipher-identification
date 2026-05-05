@@ -1,0 +1,10 @@
+,caesar,atbash,vigenere,rot13,rail_fence,reverse,base64,morse,bacon
+caesar,207,0,13,73,0,0,0,0,0
+atbash,1,93,0,4,0,0,0,0,0
+vigenere,0,0,272,1,16,0,0,0,0
+rot13,0,0,0,98,0,0,0,0,0
+rail_fence,0,0,1,0,191,0,0,0,0
+reverse,0,0,0,0,0,98,0,0,0
+base64,0,0,0,0,0,0,98,0,0
+morse,0,0,0,0,0,0,0,97,0
+bacon,0,0,0,0,0,0,0,0,98

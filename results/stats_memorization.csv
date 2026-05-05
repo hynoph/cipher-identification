@@ -1,0 +1,13 @@
+model,prompt,comparison,rot13_acc,caesar_acc,chi2_stat,phi,p_value,significant_p05
+claude-sonnet,choices,rot13_vs_caesar_19,1.0,0.8265,17.6611,0.3,0.0,True
+claude-sonnet,choices,rot13_vs_caesar_3,1.0,1.0,0.0,0.0,1.0,False
+claude-sonnet,choices,rot13_vs_caesar_7,1.0,0.2857,107.5968,0.741,0.0,True
+deepseek-r1,baseline,rot13_vs_caesar_19,0.3878,0.7347,23.951,0.35,0.0,True
+deepseek-r1,baseline,rot13_vs_caesar_3,0.3878,0.949,69.6301,0.596,0.0,True
+deepseek-r1,baseline,rot13_vs_caesar_7,0.3878,0.8163,37.5645,0.438,0.0,True
+gpt-4o,choices,rot13_vs_caesar_19,1.0,0.2245,122.7485,0.791,0.0,True
+gpt-4o,choices,rot13_vs_caesar_3,1.0,1.0,0.0,0.0,1.0,False
+gpt-4o,choices,rot13_vs_caesar_7,1.0,0.8163,18.8627,0.31,0.0,True
+llama-3.3-70b,baseline,rot13_vs_caesar_19,1.0,0.0,194.0202,0.995,0.0,True
+llama-3.3-70b,baseline,rot13_vs_caesar_3,1.0,0.2755,110.0218,0.749,0.0,True
+llama-3.3-70b,baseline,rot13_vs_caesar_7,1.0,0.0204,186.2578,0.975,0.0,True

@@ -1,0 +1,87 @@
+{
+  "total_samples": 16779,
+  "models": [
+    "claude-sonnet",
+    "deepseek-r1",
+    "gpt-4o",
+    "llama-3.3-70b"
+  ],
+  "prompt_variants": [
+    "baseline",
+    "choices",
+    "cot",
+    "expert"
+  ],
+  "overall_by_model_prompt": [
+    {
+      "model": "claude-sonnet",
+      "prompt": "baseline",
+      "overall": 0.8702623906705539
+    },
+    {
+      "model": "claude-sonnet",
+      "prompt": "choices",
+      "overall": 0.9125364431486881
+    },
+    {
+      "model": "claude-sonnet",
+      "prompt": "cot",
+      "overall": 0.7383381924198251
+    },
+    {
+      "model": "claude-sonnet",
+      "prompt": "expert",
+      "overall": 1.0
+    },
+    {
+      "model": "deepseek-r1",
+      "prompt": "baseline",
+      "overall": 0.6508746355685131
+    },
+    {
+      "model": "deepseek-r1",
+      "prompt": "choices",
+      "overall": 0.4606413994169096
+    },
+    {
+      "model": "deepseek-r1",
+      "prompt": "cot",
+      "overall": 0.6275510204081632
+    },
+    {
+      "model": "gpt-4o",
+      "prompt": "baseline",
+      "overall": 0.7441690962099126
+    },
+    {
+      "model": "gpt-4o",
+      "prompt": "choices",
+      "overall": 0.749271137026239
+    },
+    {
+      "model": "gpt-4o",
+      "prompt": "cot",
+      "overall": 0.24271137026239067
+    },
+    {
+      "model": "gpt-4o",
+      "prompt": "expert",
+      "overall": 0.2070063694267516
+    },
+    {
+      "model": "llama-3.3-70b",
+      "prompt": "baseline",
+      "overall": 0.5714285714285714
+    },
+    {
+      "model": "llama-3.3-70b",
+      "prompt": "choices",
+      "overall": 0.5153061224489796
+    },
+    {
+      "model": "llama-3.3-70b",
+      "prompt": "cot",
+      "overall": 0.4489795918367347
+    }
+  ]
+}

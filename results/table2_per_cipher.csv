@@ -1,0 +1,5 @@
+Model,Best Prompt,Caesar,Atbash,Vigenere,Rot13,Rail Fence,Reverse,Base64,Morse,Bacon
+claude-sonnet,choices,70.4,94.9,92.5,100.0,97.4,100.0,100.0,99.0,100.0
+deepseek-r1,baseline,83.3,66.3,10.2,38.8,68.9,90.8,100.0,100.0,96.9
+gpt-4o,choices,68.0,100.0,81.6,100.0,0.0,100.0,100.0,100.0,100.0
+llama-3.3-70b,baseline,9.9,71.4,98.3,100.0,3.6,96.9,100.0,100.0,0.0

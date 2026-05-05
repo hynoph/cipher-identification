@@ -1,0 +1,98 @@
+======================================================================
+STATISTICAL TEST SUMMARY
+Bootstrap CIs: 10,000 iterations, seed=42
+Multiple comparisons: Holm-Bonferroni correction (p_holm column)
+Effect sizes: odds ratio (McNemar), phi (chi-squared)
+======================================================================
+
+--- Balanced Accuracy and Class Support ---
+  claude-sonnet        [baseline  ]  macro=84.6%  majority_baseline=21.4% (caesar)
+  claude-sonnet        [choices   ]  macro=94.9%  majority_baseline=21.4% (caesar)
+  claude-sonnet        [cot       ]  macro=69.5%  majority_baseline=21.4% (caesar)
+  deepseek-r1          [baseline  ]  macro=72.8%  majority_baseline=21.4% (caesar)
+  deepseek-r1          [choices   ]  macro=52.5%  majority_baseline=21.4% (caesar)
+  deepseek-r1          [cot       ]  macro=68.7%  majority_baseline=21.4% (caesar)
+  gpt-4o               [baseline  ]  macro=79.4%  majority_baseline=21.4% (caesar)
+  gpt-4o               [choices   ]  macro=83.3%  majority_baseline=21.4% (caesar)
+  gpt-4o               [cot       ]  macro=33.2%  majority_baseline=21.4% (caesar)
+  llama-3.3-70b        [baseline  ]  macro=64.5%  majority_baseline=21.4% (caesar)
+  llama-3.3-70b        [choices   ]  macro=69.3%  majority_baseline=21.4% (caesar)
+  llama-3.3-70b        [cot       ]  macro=45.8%  majority_baseline=21.4% (caesar)
+
+--- Accuracy with 95% Bootstrap CIs ---
+  claude-sonnet        [baseline  ]  87.0%  (85.2% – 88.8%)  n=1372
+  claude-sonnet        [choices   ]  91.2%  (89.8% – 92.7%)  n=1372
+  claude-sonnet        [cot       ]  73.8%  (71.5% – 76.1%)  n=1372
+  deepseek-r1          [baseline  ]  65.1%  (62.5% – 67.6%)  n=1372
+  deepseek-r1          [choices   ]  46.1%  (43.4% – 48.7%)  n=1372
+  deepseek-r1          [cot       ]  62.8%  (60.2% – 65.3%)  n=1372
+  gpt-4o               [baseline  ]  74.4%  (72.1% – 76.7%)  n=1372
+  gpt-4o               [choices   ]  74.9%  (72.6% – 77.3%)  n=1372
+  gpt-4o               [cot       ]  24.3%  (22.0% – 26.5%)  n=1372
+  llama-3.3-70b        [baseline  ]  57.1%  (54.5% – 59.8%)  n=1372
+  llama-3.3-70b        [choices   ]  51.5%  (48.9% – 54.1%)  n=1372
+  llama-3.3-70b        [cot       ]  44.9%  (42.2% – 47.5%)  n=1372
+
+--- Pairwise Model Comparisons (McNemar, Holm-corrected) ---
+  ** [baseline  ] claude-sonnet        vs deepseek-r1          p=< 0.0001  p_holm=< 0.0001  OR=0.31  b01=137 b10=438
+  ** [baseline  ] claude-sonnet        vs gpt-4o               p=< 0.0001  p_holm=< 0.0001  OR=0.46  b01=145 b10=318
+  ** [baseline  ] claude-sonnet        vs llama-3.3-70b        p=< 0.0001  p_holm=< 0.0001  OR=0.24  b01=131 b10=541
+  ** [baseline  ] deepseek-r1          vs gpt-4o               p=< 0.0001  p_holm=< 0.0001  OR=1.60  b01=342 b10=214
+  ** [baseline  ] gpt-4o               vs llama-3.3-70b        p=< 0.0001  p_holm=< 0.0001  OR=0.29  b01=96 b10=333
+  ** [baseline  ] deepseek-r1          vs llama-3.3-70b        p=0.0001  p_holm=0.0002  OR=0.76  b01=345 b10=454
+  ** [choices   ] claude-sonnet        vs deepseek-r1          p=< 0.0001  p_holm=< 0.0001  OR=0.10  b01=68 b10=688
+  ** [choices   ] claude-sonnet        vs gpt-4o               p=< 0.0001  p_holm=< 0.0001  OR=0.27  b01=84 b10=308
+  ** [choices   ] claude-sonnet        vs llama-3.3-70b        p=< 0.0001  p_holm=< 0.0001  OR=0.01  b01=8 b10=553
+  ** [choices   ] deepseek-r1          vs gpt-4o               p=< 0.0001  p_holm=< 0.0001  OR=4.44  b01=511 b10=115
+  ** [choices   ] gpt-4o               vs llama-3.3-70b        p=< 0.0001  p_holm=< 0.0001  OR=0.20  b01=83 b10=404
+  ** [choices   ] deepseek-r1          vs llama-3.3-70b        p=0.0023  p_holm=0.0023  OR=1.29  b01=333 b10=258
+  ** [cot       ] claude-sonnet        vs deepseek-r1          p=< 0.0001  p_holm=< 0.0001  OR=0.57  b01=204 b10=356
+  ** [cot       ] claude-sonnet        vs gpt-4o               p=< 0.0001  p_holm=< 0.0001  OR=0.15  b01=121 b10=801
+  ** [cot       ] claude-sonnet        vs llama-3.3-70b        p=< 0.0001  p_holm=< 0.0001  OR=0.29  b01=159 b10=556
+  ** [cot       ] deepseek-r1          vs gpt-4o               p=< 0.0001  p_holm=< 0.0001  OR=0.07  b01=37 b10=565
+  ** [cot       ] deepseek-r1          vs llama-3.3-70b        p=< 0.0001  p_holm=< 0.0001  OR=0.26  b01=85 b10=330
+  ** [cot       ] gpt-4o               vs llama-3.3-70b        p=< 0.0001  p_holm=< 0.0001  OR=4.18  b01=372 b10=89
+
+--- Pairwise Prompt Comparisons (McNemar, Holm-corrected) ---
+  ** [claude-sonnet       ] baseline   vs cot        p=< 0.0001  p_holm=< 0.0001  OR=0.28  b01=71 b10=252
+  ** [claude-sonnet       ] choices    vs cot        p=< 0.0001  p_holm=< 0.0001  OR=0.28  b01=93 b10=332
+  ** [claude-sonnet       ] baseline   vs choices    p=0.0001  p_holm=0.0005  OR=1.79  b01=131 b10=73
+  ** [deepseek-r1         ] baseline   vs choices    p=< 0.0001  p_holm=< 0.0001  OR=0.28  b01=101 b10=362
+  ** [deepseek-r1         ] choices    vs cot        p=< 0.0001  p_holm=< 0.0001  OR=3.04  b01=341 b10=112
+     [deepseek-r1         ] baseline   vs cot        p=0.0716  p_holm=0.1432  OR=0.81  b01=132 b10=164
+  ** [gpt-4o              ] baseline   vs cot        p=< 0.0001  p_holm=< 0.0001  OR=0.04  b01=30 b10=718
+  ** [gpt-4o              ] choices    vs cot        p=< 0.0001  p_holm=< 0.0001  OR=0.01  b01=7 b10=702
+     [gpt-4o              ] baseline   vs choices    p=0.6852  p_holm=0.6852  OR=1.07  b01=113 b10=106
+  ** [llama-3.3-70b       ] baseline   vs cot        p=< 0.0001  p_holm=< 0.0001  OR=0.64  b01=301 b10=469
+  ** [llama-3.3-70b       ] baseline   vs choices    p=0.0004  p_holm=0.0016  OR=0.71  b01=192 b10=269
+  ** [llama-3.3-70b       ] choices    vs cot        p=0.0007  p_holm=0.0021  OR=0.77  b01=307 b10=398
+
+--- ROT13 vs Caesar Memorization (chi-squared) ---
+  ** [claude-sonnet       ] rot13_vs_caesar_19        p=< 0.0001  phi=0.300  (rot13=100.0% vs caesar=82.7%)
+     [claude-sonnet       ] rot13_vs_caesar_3         p=1.0000  phi=0.000  (rot13=100.0% vs caesar=100.0%)
+  ** [claude-sonnet       ] rot13_vs_caesar_7         p=< 0.0001  phi=0.741  (rot13=100.0% vs caesar=28.6%)
+  ** [deepseek-r1         ] rot13_vs_caesar_19        p=< 0.0001  phi=0.350  (rot13=38.8% vs caesar=73.5%)
+  ** [deepseek-r1         ] rot13_vs_caesar_3         p=< 0.0001  phi=0.596  (rot13=38.8% vs caesar=94.9%)
+  ** [deepseek-r1         ] rot13_vs_caesar_7         p=< 0.0001  phi=0.438  (rot13=38.8% vs caesar=81.6%)
+  ** [gpt-4o              ] rot13_vs_caesar_19        p=< 0.0001  phi=0.791  (rot13=100.0% vs caesar=22.4%)
+     [gpt-4o              ] rot13_vs_caesar_3         p=1.0000  phi=0.000  (rot13=100.0% vs caesar=100.0%)
+  ** [gpt-4o              ] rot13_vs_caesar_7         p=< 0.0001  phi=0.310  (rot13=100.0% vs caesar=81.6%)
+  ** [llama-3.3-70b       ] rot13_vs_caesar_19        p=< 0.0001  phi=0.995  (rot13=100.0% vs caesar=0.0%)
+  ** [llama-3.3-70b       ] rot13_vs_caesar_3         p=< 0.0001  phi=0.749  (rot13=100.0% vs caesar=27.6%)
+  ** [llama-3.3-70b       ] rot13_vs_caesar_7         p=< 0.0001  phi=0.975  (rot13=100.0% vs caesar=2.0%)
+
+--- Category Accuracy Differences (chi-squared) ---
+  ** [claude-sonnet       ] encoding        vs substitution    p=< 0.0001  phi=0.203  (99.7% vs 85.5%)
+     [claude-sonnet       ] encoding        vs transposition   p=0.1283  phi=0.063  (99.7% vs 98.3%)
+  ** [claude-sonnet       ] substitution    vs transposition   p=< 0.0001  phi=0.181  (85.5% vs 98.3%)
+  ** [deepseek-r1         ] encoding        vs substitution    p=< 0.0001  phi=0.465  (99.0% vs 48.2%)
+  ** [deepseek-r1         ] encoding        vs transposition   p=< 0.0001  phi=0.343  (99.0% vs 76.2%)
+  ** [deepseek-r1         ] substitution    vs transposition   p=< 0.0001  phi=0.250  (48.2% vs 76.2%)
+  ** [gpt-4o              ] encoding        vs substitution    p=< 0.0001  phi=0.242  (100.0% vs 81.1%)
+  ** [gpt-4o              ] encoding        vs transposition   p=< 0.0001  phi=0.706  (100.0% vs 33.3%)
+  ** [gpt-4o              ] substitution    vs transposition   p=< 0.0001  phi=0.456  (81.1% vs 33.3%)
+     [llama-3.3-70b       ] encoding        vs substitution    p=0.1592  phi=0.043  (66.7% vs 62.0%)
+  ** [llama-3.3-70b       ] encoding        vs transposition   p=< 0.0001  phi=0.319  (66.7% vs 34.7%)
+  ** [llama-3.3-70b       ] substitution    vs transposition   p=< 0.0001  phi=0.244  (62.0% vs 34.7%)
+
+** = significant after Holm-Bonferroni correction

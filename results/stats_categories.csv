@@ -1,0 +1,13 @@
+model,prompt,cat_a,cat_b,acc_a,acc_b,chi2_stat,phi,p_value,significant_p05
+claude-sonnet,choices,encoding,substitution,0.9966,0.8546,44.3233,0.203,0.0,True
+claude-sonnet,choices,encoding,transposition,0.9966,0.983,2.3132,0.063,0.1283,False
+claude-sonnet,choices,substitution,transposition,0.8546,0.983,35.1354,0.181,0.0,True
+deepseek-r1,baseline,encoding,substitution,0.9898,0.4821,233.0807,0.465,0.0,True
+deepseek-r1,baseline,encoding,transposition,0.9898,0.7619,69.3618,0.343,0.0,True
+deepseek-r1,baseline,substitution,transposition,0.4821,0.7619,67.6122,0.25,0.0,True
+gpt-4o,choices,encoding,substitution,1.0,0.8112,63.3688,0.242,0.0,True
+gpt-4o,choices,encoding,transposition,1.0,0.3333,292.7557,0.706,0.0,True
+gpt-4o,choices,substitution,transposition,0.8112,0.3333,224.3457,0.456,0.0,True
+llama-3.3-70b,baseline,encoding,substitution,0.6667,0.6199,1.9821,0.043,0.1592,False
+llama-3.3-70b,baseline,encoding,transposition,0.6667,0.3469,59.9161,0.319,0.0,True
+llama-3.3-70b,baseline,substitution,transposition,0.6199,0.3469,64.1172,0.244,0.0,True

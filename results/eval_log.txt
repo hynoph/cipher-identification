@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\hynop\Desktop\cipher-identification\eval\run_eval.py", line 239, in <module>
+    main()
+  File "C:\Users\hynop\Desktop\cipher-identification\eval\run_eval.py", line 222, in main
+    _main(args)
+  File "C:\Users\hynop\Desktop\cipher-identification\eval\run_eval.py", line 235, in _main
+    run_eval(model_cfg, variant, dataset, dry_run=args.dry_run, limit=args.limit)
+  File "C:\Users\hynop\Desktop\cipher-identification\eval\run_eval.py", line 185, in run_eval
+    raw = call_with_retry(provider, model_id, prompt)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hynop\Desktop\cipher-identification\eval\run_eval.py", line 127, in call_with_retry
+    return caller(model_id, prompt)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\hynop\Desktop\cipher-identification\eval\run_eval.py", line 80, in call_anthropic
+    raise ValueError("Empty response from Anthropic API")
+ValueError: Empty response from Anthropic API
+
+=== claude-sonnet / baseline — 1346 samples remaining ===

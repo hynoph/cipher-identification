@@ -1,0 +1,402 @@
+\documentclass{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{xcolor}
+
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue}
+
+\title{Can LLMs Identify Cipher Types Zero-Shot?}
+
+\author{Eric Lee \\
+  Yee Collins Research Group \\
+  \small\texttt{e.lee@ycrg-labs.org}
+}
+
+\date{}
+
+\begin{document}
+\maketitle
+
+% ============================================================
+\begin{abstract}
+We evaluate whether large language models can identify classical cipher types
+from ciphertext alone, without examples or fine-tuning.
+Four models---Claude Sonnet 4.6, GPT-4o, DeepSeek-R1, and Llama 3.3 70B---are
+benchmarked across 1,372 samples spanning 9 cipher types and three prompt strategies.
+All models exceed the 11.1\% random baseline, with Claude Sonnet reaching 91.3\%
+under a multiple-choice prompt.
+We find that chain-of-thought prompting \emph{consistently hurts} performance
+(collapsing GPT-4o from 74.9\% to 24.3\%), that prompt effects are strongly
+model-dependent, and that ROT13 is identified via memorization rather than
+reasoning. Nearly all pairwise comparisons are significant after Holm--Bonferroni correction.
+\end{abstract}
+
+% ============================================================
+\section{Introduction}
+
+Classical cryptanalysis requires recognizing an unknown cipher from ciphertext
+alone---a task that has traditionally demanded statistical expertise and domain
+knowledge~\citep{sinkov1966elementary}.
+Large language models may have absorbed cipher knowledge during pretraining,
+raising the question: \emph{can LLMs perform cipher identification zero-shot?}
+
+This provides a clean testbed for studying prompt sensitivity, emergent knowledge,
+and the limits of LLM pattern recognition, with practical relevance to automated
+security analysis.
+We contribute (1) a 1,372-sample benchmark spanning 9 cipher types and 14
+configurations, (2) a zero-shot evaluation of four models across three prompt
+strategies, and (3) statistical analysis revealing systematic misclassification
+patterns and a ROT13 memorization effect.
+
+% ============================================================
+\section{Setup}
+
+\paragraph{Dataset.}
+We encrypt 98 English plaintexts (43--80 characters) under 14 cipher
+configurations across 9 types: Caesar (shifts 3, 7, 19), Atbash,
+Vigen\`{e}re (keys \texttt{ACL}/\texttt{CIPHER}/\texttt{SECRET}), ROT13,
+Rail Fence (2 and 3 rails), Reverse, Base64, Morse, and Bacon.
+Variants of the same cipher share a label, yielding a 9-class problem.
+Caesar and Vigen\`{e}re each contribute 294 samples (three variants $\times$ 98),
+Rail Fence contributes 196 (two variants), and the remaining six ciphers contribute
+98 samples each, for $14 \times 98 = 1{,}372$ total.
+Two planned plaintext entries were not collected, accounting for the shortfall from 1,400.
+The uniform random baseline is 11.1\%; the majority-class baseline
+(always predicting Caesar or Vigen\`{e}re) is 21.4\%.
+
+\paragraph{Models and prompts.}
+All models are queried at \texttt{temperature=0}.
+We test three prompt strategies: \textbf{Baseline} (``Answer with just the cipher name''),
+\textbf{Choices} (same, with the 9 options listed), and \textbf{CoT}
+(``Think step by step\ldots Analysis:'').
+Responses are parsed with a rule-based extractor handling common aliases;
+unparseable responses are scored as incorrect.
+Pairwise comparisons use McNemar's test on matched samples; ROT13 vs.\ Caesar
+comparisons use chi-squared. All pairwise McNemar tests are corrected jointly
+using Holm--Bonferroni. All CIs are 95\% bootstrap over 10,000 iterations.
+
+% ============================================================
+\section{Results}
+
+Table~\ref{tab:main} reports overall and per-category accuracy.
+All models substantially exceed both baselines.
+Claude Sonnet achieves the best overall accuracy of 91.3\% (89.8--92.7\%)
+under the choices prompt, with a macro-average accuracy of 94.9\%,
+confirming the result is not an artifact of class imbalance.
+All pairwise model differences are statistically significant after
+Holm--Bonferroni correction ($p_{\text{holm}} < 0.001$, McNemar's test);
+full contingency counts, odds ratios, and corrected $p$-values are reported
+in Appendix~\ref{app:stats}.
+
+\begin{table}[H]
+\centering
+\caption{Overall and per-category accuracy (\%) with 95\% bootstrap CIs.
+Best result per model in \textbf{bold}.}
+\label{tab:main}
+\small
+\begin{tabular}{llccccc}
+\toprule
+\textbf{Model} & \textbf{Prompt} & \textbf{Overall} & \textbf{Subst.} & \textbf{Transp.} & \textbf{Encoding} \\
+\midrule
+\multirow{3}{*}{Claude Sonnet 4.6}
+  & Baseline & 87.0 {\scriptsize(85.2--88.8)} & 92.1 & 93.2 & 67.3 \\
+  & Choices  & \textbf{91.3 {\scriptsize(89.8--92.7)}} & 85.5 & 98.3 & 99.7 \\
+  & CoT      & 73.8 {\scriptsize(71.5--76.1)} & 73.5 & 88.4 & 60.2 \\
+\midrule
+\multirow{3}{*}{GPT-4o}
+  & Baseline & 74.4 {\scriptsize(72.1--76.7)} & 80.1 & 34.0 & 99.7 \\
+  & Choices  & \textbf{74.9 {\scriptsize(72.6--77.3)}} & 81.1 & 33.3 & 100.0 \\
+  & CoT      & 24.3 {\scriptsize(22.0--26.5)} & 10.1 & 14.6 & 71.8 \\
+\midrule
+\multirow{3}{*}{DeepSeek-R1}
+  & Baseline & \textbf{65.1 {\scriptsize(62.5--67.6)}} & 48.2 & 76.2 & 99.0 \\
+  & Choices  & 46.1 {\scriptsize(43.4--48.7)} & 35.6 & 45.9 & 74.1 \\
+  & CoT      & 62.8 {\scriptsize(60.2--65.3)} & 47.2 & 74.1 & 92.9 \\
+\midrule
+\multirow{3}{*}{Llama 3.3 70B}
+  & Baseline & \textbf{57.1 {\scriptsize(54.5--59.8)}} & 62.0 & 34.7 & 66.7 \\
+  & Choices  & 51.5 {\scriptsize(48.9--54.1)} & 30.7 & 58.5 & 100.0 \\
+  & CoT      & 44.9 {\scriptsize(42.2--47.5)} & 38.3 & 46.9 & 60.5 \\
+\midrule
+\multicolumn{2}{l}{\textit{Random baseline}} & 11.1 & --- & --- & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Per-cipher breakdown.}
+Figure~\ref{fig:heatmap} shows per-cipher accuracy at each model's best prompt.
+Encoding ciphers (Base64, Morse, Bacon) are identified near-perfectly by three of
+four models, driven by distinctive character sets rather than cryptanalytic reasoning.
+Caesar and Rail Fence are the hardest ciphers: GPT-4o scores 0.0\% on Rail Fence
+under choices, and Llama scores only 9.9\% on Caesar, systematically defaulting
+to Vigen\`{e}re. DeepSeek struggles with Vigen\`{e}re itself (10.2\%), a striking
+reversal from Llama's pattern.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{fig1_heatmap.png}
+  \caption{Per-cipher accuracy (\%) at each model's best prompt. Red = 0\%, green = 100\%.}
+  \label{fig:heatmap}
+\end{figure}
+
+\paragraph{Confusion patterns.}
+Figure~\ref{fig:confusion} shows row-normalized confusion matrices for all models.
+Claude Sonnet is nearly diagonal; its main error is Caesar $\to$ ROT13 (25\%),
+reasonable since ROT13 is Caesar-13.
+GPT-4o completely fails on Rail Fence despite strong overall performance.
+Llama exhibits a strong Vigen\`{e}re bias, misclassifying Caesar (64\%),
+Rail Fence (88\%), and Bacon (50\%) as Vigen\`{e}re.
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[t]{0.48\linewidth}
+    \includegraphics[width=\linewidth]{fig2_confusion_claude-sonnet.png}
+    \caption{Claude Sonnet 4.6 (choices)}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.48\linewidth}
+    \includegraphics[width=\linewidth]{fig2_confusion_gpt-4o.png}
+    \caption{GPT-4o (choices)}
+  \end{subfigure}
+  \vspace{0.4em}
+  \begin{subfigure}[t]{0.48\linewidth}
+    \includegraphics[width=\linewidth]{fig2_confusion_deepseek-r1.png}
+    \caption{DeepSeek-R1 (baseline)}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.48\linewidth}
+    \includegraphics[width=\linewidth]{fig2_confusion_llama-3.3-70b.png}
+    \caption{Llama 3.3 70B (baseline)}
+  \end{subfigure}
+  \caption{Row-normalized confusion matrices for all models at their best prompt.}
+  \label{fig:confusion}
+\end{figure}
+
+\paragraph{Prompt effects.}
+CoT degrades performance for all four models, significantly so for Claude
+($-13.2$pp, $p_{\text{holm}} < 0.001$), GPT-4o
+($-50.6$pp, $p_{\text{holm}} < 0.001$), and Llama
+($-12.2$pp, $p_{\text{holm}} < 0.001$); the baseline vs.\ CoT gap
+for DeepSeek does not survive correction ($p_{\text{holm}} = 0.143$).
+The choices prompt helps Claude ($+4.3$pp, $p_{\text{holm}} < 0.001$)
+but hurts DeepSeek ($-19.0$pp, $p_{\text{holm}} < 0.001$)
+and has no significant effect on GPT-4o ($p_{\text{holm}} = 0.685$).
+Odds ratios and contingency counts for all comparisons are in Appendix~\ref{app:stats}.
+
+\paragraph{ROT13 memorization.}
+Figure~\ref{fig:memorization} plots ROT13 accuracy against Caesar shift variants.
+Claude and GPT-4o score 100\% on ROT13 while dropping substantially on
+Caesar-7 (28.6\% and 81.6\%) and Caesar-19 (82.7\% and 22.4\%),
+gaps that are statistically significant ($p < 0.001$, chi-squared).
+Llama shows the most extreme effect: 100\% on ROT13 but 2.0\% on Caesar-7
+and 0.0\% on Caesar-19.
+DeepSeek shows the opposite pattern---38.8\% on ROT13 but 94.9\% on Caesar-3---
+suggesting its training data distribution differs substantially.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\linewidth]{fig3_memorization.png}
+  \caption{ROT13 vs.\ Caesar shift accuracy by model. For most models, ROT13
+           accuracy is inflated relative to other shifts, indicating memorization.}
+  \label{fig:memorization}
+\end{figure}
+
+\paragraph{Plaintext length.}
+Accuracy is largely flat across short ($\leq$62 chars), medium (63--67),
+and long ($>$67) plaintexts (Figure~\ref{fig:length}), suggesting length
+is not a meaningful factor within our tested range.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\linewidth]{fig4_by_length.png}
+  \caption{Accuracy by plaintext length tercile. Performance is largely invariant to length.}
+  \label{fig:length}
+\end{figure}
+
+% ============================================================
+\section{Limitations}
+
+\paragraph{ROT13 memorization evidence.}
+The elevated ROT13 accuracy relative to other Caesar shifts is \emph{consistent}
+with name-level memorization but does not rule out alternative explanations,
+such as ROT13 appearing more frequently in pretraining corpora independent of
+the cipher label.
+Definitive evidence would require controls that are beyond the scope of this
+study: (1)~additional Caesar shifts (e.g., 11, 17, 23) to rule out
+shift-specific difficulty; (2)~shuffled-alphabet substitution ciphers presented
+under the ROT13 label to isolate label recognition from structural recognition;
+(3)~adversarial encodings that resemble ROT13 superficially but differ
+structurally; and (4)~held-out synthetic cipher names absent from pretraining data.
+We treat the memorization finding as a hypothesis supported by converging evidence
+rather than a confirmed causal claim.
+
+\paragraph{Benchmark scope.}
+All plaintexts are English sentences of moderate length (43--80 characters).
+Generalization to other languages, longer texts, or structured data
+(e.g., code, JSON) is untested.
+The parser resolves common aliases but may misclassify edge-case responses;
+the parse rate and raw responses are released (Appendix~\ref{app:data}) for
+independent reanalysis.
+
+% ============================================================
+\section{Discussion}
+
+CoT's consistent negative effect suggests cipher identification relies on
+holistic pattern matching rather than step-by-step deduction---forcing
+explicit reasoning disrupts this process.
+The divergent effect of the choices prompt across models indicates that
+constrained answer spaces interact non-trivially with model architecture
+and instruction-following behavior.
+The near-perfect encoding scores (Base64, Morse, Bacon) reflect character-set
+recognition rather than genuine cryptanalysis; benchmarks should be cautious
+about inflating reported numbers with such trivially-distinguished encodings.
+Llama's Vigen\`{e}re bias and the universal ROT13 inflation suggest that
+LLM cipher identification is driven more by training-data frequency than
+by reasoning from cryptographic principles.
+
+% ============================================================
+\section{Conclusion}
+
+LLMs can identify classical ciphers well above chance zero-shot, but their
+performance reflects memorization and surface-level pattern matching more
+than cryptanalytic reasoning. Chain-of-thought prompting reliably hurts;
+prompt effects are model-dependent; and encoding schemes are trivially
+identified. These findings have implications for both security applications
+and the study of emergent capabilities in LLMs.
+
+% ============================================================
+\appendix
+
+\section{Prompt Templates}
+\label{app:prompts}
+
+All models are queried with no system or developer prompt.
+Three prompt variants are used (variable \texttt{\{ciphertext\}} is substituted at inference time):
+
+\paragraph{Baseline.}
+\begin{quote}\small
+\texttt{What encryption method was used to produce the following ciphertext?}\\
+\texttt{\{ciphertext\}}\\
+\texttt{Answer with just the cipher name.}
+\end{quote}
+
+\paragraph{Choices.}
+\begin{quote}\small
+\texttt{What encryption method was used to produce the following ciphertext?}\\
+\texttt{\{ciphertext\}}\\
+\texttt{Choose one: Caesar, Atbash, Vigenere, ROT13, Rail Fence, Reverse, Base64, Morse Code, Bacon Cipher}\\
+\texttt{Answer with just the cipher name.}
+\end{quote}
+
+\paragraph{Chain-of-thought (CoT).}
+\begin{quote}\small
+\texttt{What encryption method was used to produce the following ciphertext?}
+\texttt{Think step by step about the patterns you observe, then give your final answer.}\\
+\texttt{\{ciphertext\}}\\
+\texttt{Analysis:}
+\end{quote}
+
+\section{Model and Inference Details}
+\label{app:models}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{llll}
+\toprule
+\textbf{Name} & \textbf{Provider} & \textbf{Model ID} & \textbf{Endpoint} \\
+\midrule
+Claude Sonnet 4.6 & Anthropic  & \texttt{claude-sonnet-4-6}                          & Messages API \\
+GPT-4o            & OpenAI     & \texttt{gpt-4o}                                     & Chat Completions API \\
+DeepSeek-R1       & DeepSeek   & \texttt{deepseek-reasoner}                          & Chat API \\
+Llama 3.3 70B     & Together AI & \texttt{meta-llama/Llama-3.3-70B-Instruct-Turbo}   & Inference API \\
+\bottomrule
+\end{tabular}
+\caption{Model identifiers and providers. All models queried at \texttt{temperature=0}, \texttt{max\_tokens=500}, no system prompt. Experiments conducted on April 25, 2025.}
+\end{table}
+
+\section{Answer Parser}
+\label{app:parser}
+
+Responses are normalized to lowercase and parsed by a rule-based extractor
+in the following priority order:
+(1) search for explicit answer markers (\texttt{final answer:}, \texttt{the cipher is}, etc.)
+working from the end of the response;
+(2) check the last three non-empty lines;
+(3) check the first line;
+(4) scan the full response for any valid cipher name or known alias.
+A fixed alias table maps common variants (e.g., \texttt{rot-13}$\to$\texttt{rot13},
+\texttt{vigen\`{e}re}$\to$\texttt{vigenere}) to canonical labels.
+Responses that cannot be mapped are scored as incorrect.
+The full alias table and parser source are released with the dataset.
+
+\section{Data and Reproducibility}
+\label{app:data}
+
+The benchmark dataset (\texttt{data/dataset.jsonl}), raw model predictions
+(\texttt{results/*.jsonl}), all figures, and all statistical output are
+released alongside this paper.
+Each prediction record contains: sample ID, true cipher label,
+predicted cipher label, raw model response, parseability flag, and correctness flag.
+
+\section{Statistical Test Details}
+\label{app:stats}
+
+McNemar's test is applied to matched prediction pairs (same sample, same prompt).
+The exact binomial variant is used when the number of discordant pairs is below 25;
+otherwise the asymptotic $\chi^2$ variant with continuity correction is used.
+All pairwise McNemar tests (18 model comparisons $\times$ 3 prompts + 12 prompt
+comparisons) are corrected jointly using the Holm--Bonferroni procedure.
+Effect sizes for McNemar tests are reported as odds ratios ($b_{01}/b_{10}$,
+where $b_{01}$ = cases where B is correct and A is not).
+Effect sizes for $\chi^2$ tests are reported as $\phi = \sqrt{\chi^2 / n}$.
+Contingency counts ($b_{01}$, $b_{10}$) for all McNemar tests are provided in
+\texttt{results/stats\_mcnemar\_models.csv} and \texttt{results/stats\_mcnemar\_prompts.csv}.
+
+% ============================================================
+\bibliographystyle{plainnat}
+\begin{thebibliography}{99}
+
+\bibitem[Bubeck et al.(2023)]{bubeck2023sparks}
+Bubeck, S., et al. (2023).
+Sparks of artificial general intelligence: Early experiments with GPT-4.
+\textit{arXiv:2303.12712}.
+
+\bibitem[Carlini et al.(2021)]{carlini2021extracting}
+Carlini, N., et al. (2021).
+Extracting training data from large language models.
+\textit{USENIX Security}.
+
+\bibitem[Kojima et al.(2022)]{kojima2022large}
+Kojima, T., et al. (2022).
+Large language models are zero-shot reasoners.
+\textit{NeurIPS}.
+
+\bibitem[McNemar(1947)]{mcnemar1947note}
+McNemar, Q. (1947).
+Note on the sampling error of the difference between correlated proportions.
+\textit{Psychometrika}, 12(2), 153--157.
+
+\bibitem[Sinkov(1966)]{sinkov1966elementary}
+Sinkov, A. (1966).
+\textit{Elementary Cryptanalysis}.
+Mathematical Association of America.
+
+\bibitem[Wei et al.(2022)]{wei2022chain}
+Wei, J., et al. (2022).
+Chain-of-thought prompting elicits reasoning in large language models.
+\textit{NeurIPS}.
+
+\end{thebibliography}
+
+\end{document}

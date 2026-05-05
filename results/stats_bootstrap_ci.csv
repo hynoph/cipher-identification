@@ -1,0 +1,13 @@
+model,prompt,accuracy,ci_lower,ci_upper,n
+claude-sonnet,baseline,0.8703,0.852,0.8878,1372
+claude-sonnet,choices,0.9125,0.898,0.9271,1372
+claude-sonnet,cot,0.7383,0.715,0.7609,1372
+deepseek-r1,baseline,0.6509,0.6254,0.6764,1372
+deepseek-r1,choices,0.4606,0.4344,0.4869,1372
+deepseek-r1,cot,0.6276,0.602,0.6531,1372
+gpt-4o,baseline,0.7442,0.7208,0.7668,1372
+gpt-4o,choices,0.7493,0.7259,0.7726,1372
+gpt-4o,cot,0.2427,0.2201,0.2653,1372
+llama-3.3-70b,baseline,0.5714,0.5452,0.5977,1372
+llama-3.3-70b,choices,0.5153,0.4891,0.5415,1372
+llama-3.3-70b,cot,0.449,0.422,0.4752,1372
