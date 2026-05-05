@@ -29,16 +29,22 @@
 
 % ============================================================
 \begin{abstract}
-We evaluate whether large language models can identify classical cipher types
-from ciphertext alone, without examples or fine-tuning.
+We introduce a benchmark for evaluating zero-shot cipher identification in large
+language models.
 Four models---Claude Sonnet 4.6, GPT-4o, DeepSeek-R1, and Llama 3.3 70B---are
-benchmarked across 1,372 samples spanning 9 cipher types and three prompt strategies.
-All models exceed the 11.1\% random baseline, with Claude Sonnet reaching 91.3\%
-under a multiple-choice prompt.
+evaluated across 1,372 samples spanning 9 cipher types and three prompt strategies,
+with no examples or fine-tuning.
+All models substantially exceed both the 11.1\% random and 21.4\% majority-class
+baselines, with Claude Sonnet reaching 91.3\% overall and 94.9\% macro-average
+accuracy under a multiple-choice prompt.
 We find that chain-of-thought prompting \emph{consistently hurts} performance
 (collapsing GPT-4o from 74.9\% to 24.3\%), that prompt effects are strongly
-model-dependent, and that ROT13 is identified via memorization rather than
-reasoning. Nearly all pairwise comparisons are significant after Holm--Bonferroni correction.
+model-dependent, and that ROT13 accuracy is inflated relative to other Caesar
+shifts---consistent with name-level memorization rather than cryptanalytic reasoning.
+All pairwise comparisons are corrected for multiple comparisons via Holm--Bonferroni;
+effect sizes and contingency counts are reported throughout.
+The benchmark, raw model predictions, and analysis code are publicly released at
+\url{https://github.com/hynoph/cipher-identification}.
 \end{abstract}
 
 % ============================================================
